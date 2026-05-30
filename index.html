@@ -358,6 +358,8 @@ function saveLocal(){localStorage.setItem(LS_KEY,JSON.stringify(DB));}
 function loadLocal(){
   try{const s=localStorage.getItem(LS_KEY);if(s)DB=JSON.parse(s);}catch(e){}
   if(!DB.avisos)DB.avisos=[];if(!DB.guardia)DB.guardia=[];if(!DB.log)DB.log=[];
+  if(!DB.expedientes)DB.expedientes=[];
+  if(!DB.tareas)DB.tareas=[];
   if(!DB.avisos.length)DB.avisos=[
     {id:uid(),tipo:"azul",texto:"Bienvenidos al turno "+turnoActual()+". Revisá urgentes antes de comenzar.",ts:ts(),auto:true},
     {id:uid(),tipo:"rojo",texto:"Recordar declarar a las duplas apenas se reciban.",ts:ts()},
@@ -387,7 +389,9 @@ async function syncRemote(action,payload={}){
 async function cargarDesdeRemoto(){
   if(!APPS_SCRIPT_URL){setSyncStatus("","local");return;}
   const data=await syncRemote("GET_ALL");
-  if(data&&data.ok){DB=data.db;if(!DB.avisos)DB.avisos=[];if(!DB.guardia)DB.guardia=[];if(!DB.log)DB.log=[];saveLocal();}
+  if(data&&data.ok){DB=data.db;if(!DB.avisos)DB.avisos=[];if(!DB.guardia)DB.guardia=[];if(!DB.log)DB.log=[];
+  if(!DB.expedientes)DB.expedientes=[];
+  if(!DB.tareas)DB.tareas=[];saveLocal();}
 }
 
 async function saveDB(){
